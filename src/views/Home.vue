@@ -1,18 +1,48 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div v-if="isAuth">
+    <EditView :username="username"/>
+  </div>
+  <div v-else>
+    <Button @btnClicked="this.showLogin = false; this.showRegister = true" text="Register" /> | 
+    <Button @btnClicked="this.showRegister = false; this.showLogin = true" text="Login"/>
+
+    <div v-if="showLogin" class="container" id="login">
+      <Login />
+    </div>
+
+    <div v-if="showRegister" class="container" id="register">
+      <Register />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+
+import EditView from "../components/EditView.vue"
+import Login from "../components/Login.vue"
+import Register from "../components/Register.vue"
+import Button from "../components/mini/Button.vue"
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    EditView,
+    Login,
+    Register,
+    Button
+  },
+  data() {
+    return {
+      'isAuth': true,
+      'showLogin': false,
+      'showRegister': true,
+      'username': "username"
+    }
+  },
+  methods() {
+    toggle = () => {
+      this.showLogin = !this.showLogin
+    }
   }
 }
 </script>
