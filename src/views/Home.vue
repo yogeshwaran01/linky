@@ -33,10 +33,10 @@ export default {
   },
   data() {
     return {
-      'isAuth': true,
+      'isAuth': localStorage.getItem('isAuth') || false,
       'showLogin': false,
       'showRegister': true,
-      'username': "username"
+      'username': localStorage.getItem('username')
     }
   },
   methods() {

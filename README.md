@@ -1,19 +1,39 @@
 # linky
 
-## Project setup
+## Backend
+
+Provided by [@velushree](https://github.com/velushree)/[linky](https://github.com/velushree/linktree)
+
+- FastAPI
+- Mongodb
+
+### Project setup
+
+```
+git clone https://github.com/velushree/linktree
+```
+
+```
+pip install -r requirements.txt
+```
+
+### Run
+
+```
+uvicorn main:app --reload
+```
+
+## Frontend
+
+- Vue js
+- Materialize css
+
+### Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Run
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

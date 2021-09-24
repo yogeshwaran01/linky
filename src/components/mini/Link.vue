@@ -2,7 +2,7 @@
   <div :key="link.link_name" v-for="link in links">
     <div v-if="needBtn">
       <div class="mor">
-            <a :href="link.link" >{{ link.link_name }}</a>
+            <a :href="link.link_url" >{{ link.link_name }}</a>
             <div class="can">
                 <Icon :name="'delete'" @iconClicked="this.$emit('delClicked')" />
             </div>
@@ -10,7 +10,7 @@
     </div>
     <div v-else>
       <div class="mor">
-        <a :href="link.link">{{ link.link_name }}</a>
+        <a :href="link.link_url">{{ link.link_name }}</a>
       </div>
     </div>
   </div>

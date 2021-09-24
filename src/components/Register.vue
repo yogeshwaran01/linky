@@ -57,7 +57,7 @@
         </div>
         <div class="row" v-show="!usernameValid">
           <span class="helper-text" style="text-align: center; color: red"
-            >Username should be minimun five character</span
+            >Username already Found</span
           >
         </div>
         <div class="row" v-show="!passwordValid">
@@ -87,30 +87,62 @@ export default {
       password: "",
       confirmPassword: "",
       email: "",
+      allUsers: [],
     };
   },
   methods: {
-    submited(e) {
-      console.log("Done")
+    async submited(e) {
       e.preventDefault();
+      let api = "http://127.0.0.1:8000/signup";
+      let data = {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+      };
+      await fetch(api, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error("error")
+          }
+        })
+        .then((data) => {
+          alert("Registeration done")
+        })
+        .catch(() => {
+          alert("Invalid form submission")
+        })
     },
   },
   computed: {
     usernameValid() {
-      if (this.username.length >= 5) {
-        return true
+      if (this.allUsers.includes(this.username)) {
+        return false;
       } else {
-        return false
+        return true;
       }
     },
     passwordValid() {
       if (this.password === this.confirmPassword) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
-    }
-  }
+    },
+  },
+  async created() {
+    const res = await fetch("http://127.0.0.1:8000/alluser");
+    await res.json().then((data) => {
+      this.allUsers = data['all_user_names']
+    });
+  },
 };
 </script>
 
@@ -120,7 +152,6 @@ h1 {
   color: #5cbe09;
   text-decoration: underline;
   font-size: xx-large;
-
 }
 
 .input-field input[col="change"]:focus + label {

@@ -1,17 +1,36 @@
 <template>
-  <Profile :profile="userdata.metadata.pic" :username="userdata.username" />
+  <Button text="Log out" type="submit" @btnClicked="clear" />
+  <br />
+  <br />
+  <Profile :profile="profile_pic" :username="userdata.username" />
   <div class="container">
     <div class="container">
       <div class="row">
         <form @submit="submitted" class="col s12">
           <div class="row">
             <div class="input-field col s6">
-              <input id="name" col="change" type="text" class="validate" />
+              <input
+                id="name"
+                col="change"
+                type="text"
+                class="validate"
+                v-model="name"
+              />
               <label for="name">Name</label>
             </div>
             <div class="input-field col s6">
-              <input id="link" col="change" type="url" class="validate" />
-              <span class="helper-text" data-error="wrong" data-success="right"></span>
+              <input
+                id="link"
+                col="change"
+                type="url"
+                class="validate"
+                v-model="link"
+              />
+              <span
+                class="helper-text"
+                data-error="wrong"
+                data-success="right"
+              ></span>
               <label for="link">Link</label>
             </div>
           </div>
@@ -34,7 +53,7 @@
 <script>
 import Button from "../components/mini/Button.vue";
 import Link from "../components/mini/Link.vue";
-import Profile from "../components/mini/Profile.vue"
+import Profile from "../components/mini/Profile.vue";
 export default {
   name: "EditView",
   props: {
@@ -43,33 +62,63 @@ export default {
   components: {
     Button,
     Link,
-    Profile
+    Profile,
   },
   methods: {
     btnClicked() {
       console.log("code");
     },
-    submitted(e) {
-      console.log("form");
+    async submitted(e) {
       e.preventDefault();
+      let data = {
+        username: this.username,
+        links: [
+          {
+            link_name: this.name,
+            link_url: this.link,
+          },
+        ],
+      };
+      await fetch("http://127.0.0.1:8000/postlinks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error("error");
+          }
+        })
+        .then((data) => {
+          this.userdata = data;
+        })
+        .catch(() => {
+          alert("Invalid link");
+        });
+    },
+    clear() {
+      localStorage.clear();
+      this.$router.go();
     },
   },
   data() {
     return {
       userdata: {},
+      profile_pic: `https://robohash.org/${this.username}`,
+      name: "",
+      link: "",
     };
   },
-  created() {
-    this.userdata = {
-      links: [
-        { link: "https://github.com", link_name: "Github" },
-        { link: "https://youtube.com", link_name: "Youtube" },
-      ],
-      username: "yogeshwaran01",
-      metadata: {
-        pic: `https://robohash.org/${this.username}`,
-      },
-    };
+  async created() {
+    const response = await fetch(`http://127.0.0.1:8000/view/${this.username}`);
+    await response.json().then((data) => {
+      this.userdata = data;
+    });
   },
 };
 </script>
