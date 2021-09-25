@@ -2,11 +2,14 @@
   <div :key="link.link_name" v-for="link in links">
     <div v-if="needBtn">
       <div class="mor">
-            <a :href="link.link_url" >{{ link.link_name }}</a>
-            <div class="can">
-                <Icon :name="'delete'" @iconClicked="this.$emit('delClicked', link.link_name)" />
-            </div>
+        <a :href="link.link_url">{{ link.link_name }}</a>
+        <div class="can">
+          <Icon
+            :name="'delete'"
+            @iconClicked="this.$emit('delClicked', link.link_name)"
+          />
         </div>
+      </div>
     </div>
     <div v-else>
       <div class="mor">
@@ -17,11 +20,11 @@
 </template>
 
 <script>
-import Icon from "../mini/Icon.vue"
+import Icon from "../mini/Icon.vue";
 export default {
   name: "Link",
   components: {
-    Icon
+    Icon,
   },
   emits: ["delClicked"],
   props: {
@@ -47,7 +50,6 @@ a {
   text-transform: capitalize;
 }
 .can {
-    float: right;
+  float: right;
 }
-
 </style>

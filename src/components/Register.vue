@@ -110,19 +110,19 @@ export default {
           if (res.ok) {
             return res.json();
           } else {
-            throw new Error("error")
+            throw new Error("error");
           }
         })
         .then((data) => {
-          alert("Registeration done")
-          this.username = ""
-          this.password = ""
-          this.confirmPassword = ""
-          this.email = ""
+          alert("Registeration done");
+          this.username = "";
+          this.password = "";
+          this.confirmPassword = "";
+          this.email = "";
         })
         .catch(() => {
-          alert("Invalid form submission")
-        })
+          alert("Invalid form submission");
+        });
     },
   },
   computed: {
@@ -144,7 +144,7 @@ export default {
   async created() {
     const res = await fetch("http://127.0.0.1:8000/alluser");
     await res.json().then((data) => {
-      this.allUsers = data['all_user_names']
+      this.allUsers = data["all_user_names"];
     });
   },
 };

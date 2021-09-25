@@ -1,5 +1,5 @@
 <template>
-  <Button text="Log out" @btnClicked="clear" /> | 
+  <Button text="Log out" @btnClicked="clear" /> |
   <Button text="View" @btnClicked="go" />
   <br />
   <br />
@@ -115,7 +115,7 @@ export default {
           }
         })
         .then((data) => {
-          this.userdata.links = data.links
+          this.userdata.links = data.links;
           this.$router.go();
         })
         .catch(() => {
@@ -127,8 +127,8 @@ export default {
       this.$router.go();
     },
     go() {
-      this.$router.push(this.username)
-    }
+      this.$router.push(this.username);
+    },
   },
   async created() {
     const response = await fetch(`http://127.0.0.1:8000/view/${this.username}`);
