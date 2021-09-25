@@ -4,7 +4,7 @@
       <div class="mor">
             <a :href="link.link_url" >{{ link.link_name }}</a>
             <div class="can">
-                <Icon :name="'delete'" @iconClicked="this.$emit('delClicked')" />
+                <Icon :name="'delete'" @iconClicked="this.$emit('delClicked', link.link_name)" />
             </div>
         </div>
     </div>
@@ -23,6 +23,7 @@ export default {
   components: {
     Icon
   },
+  emits: ["delClicked"],
   props: {
     links: Array,
     needBtn: Boolean,

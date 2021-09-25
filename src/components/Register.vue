@@ -115,6 +115,10 @@ export default {
         })
         .then((data) => {
           alert("Registeration done")
+          this.username = ""
+          this.password = ""
+          this.confirmPassword = ""
+          this.email = ""
         })
         .catch(() => {
           alert("Invalid form submission")

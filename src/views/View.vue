@@ -1,4 +1,8 @@
 <template>
+  <div v-if="isAuth">
+    <Button text="Edit" @btnClicked="go" />
+  </div>
+  <br />
   <div v-if="!usernameValid">
     <Profile :profile="profile_pic" :username="userdata.username" />
     <div class="container">
@@ -17,20 +21,28 @@
 <script>
 import Link from "../components/mini/Link.vue";
 import Profile from "../components/mini/Profile.vue";
+import Button from "../components/mini/Button.vue";
 
 export default {
   name: "View",
   components: {
     Link,
     Profile,
+    Button,
   },
   data() {
     return {
       username: this.$route.params.username,
       allUsers: [],
       userdata: {},
-      profile_pic: `https://robohash.org/${this.username}`
+      profile_pic: `https://robohash.org/${this.$route.params.username}`,
+      isAuth: localStorage.getItem("isAuth"),
     };
+  },
+  methods: {
+    go() {
+      this.$router.push("/");
+    },
   },
   async created() {
     const res = await fetch("http://127.0.0.1:8000/alluser");
@@ -38,10 +50,10 @@ export default {
       this.allUsers = data["all_user_names"];
     });
 
-    const response = await fetch(`http://127.0.0.1:8000/view/${this.username}`)
-    await response.json().then(data => {
-      this.userdata = data
-    })
+    const response = await fetch(`http://127.0.0.1:8000/view/${this.username}`);
+    await response.json().then((data) => {
+      this.userdata = data;
+    });
   },
   computed: {
     usernameValid() {

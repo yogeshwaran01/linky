@@ -1,5 +1,6 @@
 <template>
-  <Button text="Log out" type="submit" @btnClicked="clear" />
+  <Button text="Log out" @btnClicked="clear" /> | 
+  <Button text="View" @btnClicked="go" />
   <br />
   <br />
   <Profile :profile="profile_pic" :username="userdata.username" />
@@ -41,11 +42,7 @@
   </div>
   <div class="container">
     <div class="container">
-      <Link
-        :links="userdata.links"
-        :needBtn="true"
-        @delClicked="btnClicked()"
-      />
+      <Link :links="userdata.links" :needBtn="true" @delClicked="btnClicked" />
     </div>
   </div>
 </template>
@@ -64,9 +61,32 @@ export default {
     Link,
     Profile,
   },
+  data() {
+    return {
+      userdata: {},
+      profile_pic: `https://robohash.org/${this.username}`,
+      name: "",
+      link: "",
+    };
+  },
   methods: {
-    btnClicked() {
-      console.log("code");
+    async btnClicked(taskName) {
+      let post_data = {
+        username: localStorage.getItem("username"),
+        link_name: taskName,
+      };
+      await fetch("http://127.0.0.1:8000/deletelinks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(post_data),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          this.$router.go();
+        });
     },
     async submitted(e) {
       e.preventDefault();
@@ -95,7 +115,8 @@ export default {
           }
         })
         .then((data) => {
-          this.userdata = data;
+          this.userdata.links = data.links
+          this.$router.go();
         })
         .catch(() => {
           alert("Invalid link");
@@ -105,14 +126,9 @@ export default {
       localStorage.clear();
       this.$router.go();
     },
-  },
-  data() {
-    return {
-      userdata: {},
-      profile_pic: `https://robohash.org/${this.username}`,
-      name: "",
-      link: "",
-    };
+    go() {
+      this.$router.push(this.username)
+    }
   },
   async created() {
     const response = await fetch(`http://127.0.0.1:8000/view/${this.username}`);
