@@ -22,6 +22,7 @@
 import Link from "../components/mini/Link.vue";
 import Profile from "../components/mini/Profile.vue";
 import Button from "../components/mini/Button.vue";
+import config from "../config";
 
 export default {
   name: "View",
@@ -45,12 +46,12 @@ export default {
     },
   },
   async created() {
-    const res = await fetch("http://127.0.0.1:8000/alluser");
+    const res = await fetch(`${config.url}/alluser`);
     await res.json().then((data) => {
       this.allUsers = data["all_user_names"];
     });
 
-    const response = await fetch(`http://127.0.0.1:8000/view/${this.username}`);
+    const response = await fetch(`${config.url}/view/${this.username}`);
     await response.json().then((data) => {
       this.userdata = data;
     });

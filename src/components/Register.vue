@@ -75,6 +75,7 @@
 
 <script>
 import Button from "./mini/Button.vue";
+import config from "../config";
 
 export default {
   name: "Register",
@@ -93,7 +94,7 @@ export default {
   methods: {
     async submited(e) {
       e.preventDefault();
-      let api = "http://127.0.0.1:8000/signup";
+      let api = `${config.url}/signup`;
       let data = {
         username: this.username,
         email: this.email,
@@ -142,7 +143,7 @@ export default {
     },
   },
   async created() {
-    const res = await fetch("http://127.0.0.1:8000/alluser");
+    const res = await fetch(`${config.url}/alluser`);
     await res.json().then((data) => {
       this.allUsers = data["all_user_names"];
     });

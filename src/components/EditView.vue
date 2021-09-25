@@ -51,6 +51,8 @@
 import Button from "../components/mini/Button.vue";
 import Link from "../components/mini/Link.vue";
 import Profile from "../components/mini/Profile.vue";
+import config from "../config";
+
 export default {
   name: "EditView",
   props: {
@@ -75,7 +77,7 @@ export default {
         username: localStorage.getItem("username"),
         link_name: taskName,
       };
-      await fetch("http://127.0.0.1:8000/deletelinks", {
+      await fetch(`${config.url}/deletelinks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +101,7 @@ export default {
           },
         ],
       };
-      await fetch("http://127.0.0.1:8000/postlinks", {
+      await fetch(`${config.url}/postlinks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -131,7 +133,7 @@ export default {
     },
   },
   async created() {
-    const response = await fetch(`http://127.0.0.1:8000/view/${this.username}`);
+    const response = await fetch(`${config.url}/view/${this.username}`);
     await response.json().then((data) => {
       this.userdata = data;
     });
