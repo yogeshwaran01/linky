@@ -13,7 +13,7 @@
   </div>
   <div v-else>
     <div class="row" v-show="usernameValid">
-      <h1>Username not found</h1>
+      <h1>...</h1>
     </div>
   </div>
 </template>
